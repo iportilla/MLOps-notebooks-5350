@@ -39,13 +39,42 @@ Each step maps to part of the notebook:
 
 ## Run it
 
+### 1. Tell the notebook which workspace to use: `.env`
+
+Copy the template and fill in your subscription ID and resource group:
+
+```bash
+cp env.sample .env
+```
+
+```ini
+# .env
+SUBSCRIPTION_ID = "<your-subscription-id>"
+RESOURCE_GROUP = "<your-resource-group>"
+WORKSPACE = "ml_5350"
+```
+
+To find the values:
+- **Azure portal:** open your Azure Machine Learning workspace. *Overview* shows the **Subscription ID** and **Resource group**.
+- **Azure CLI:** after `az login`, run `az account show --query id -o tsv` for the subscription ID, and `az resource list --resource-type Microsoft.MachineLearningServices/workspaces -o table` for the resource group of each workspace.
+
+`.env` is **git-ignored**, so your IDs stay on your machine. Commit `env.sample` (the template), never `.env`. The notebook reads `.env` in its first cell and prints only the first 8 characters of the subscription ID.
+
+Other options, if you prefer:
+- **`config.json`:** studio → top-right menu → *Download config file*, saved in this folder (also git-ignored).
+- **Type the values** in the notebook's first code cell, for a quick test.
+
+If more than one is set, `config.json` wins, then `.env`, then the values in the cell.
+
+### 2. Sign in and open the notebook
+
 ```bash
 pip install -r requirements.txt
 az login --tenant <your-tenant-id>      # or let the notebook open a browser to sign in
 jupyter lab azure_mlops.ipynb
 ```
 
-Put your subscription, resource group and workspace in the first code cell, or save the workspace's `config.json` (studio → top-right menu → *Download config file*) in this folder. `config.json` is git-ignored.
+If you have several subscriptions, `az login` asks you to pick a default. Any choice works: the notebook uses the subscription in `.env`.
 
 ## What is in this folder
 
@@ -64,7 +93,8 @@ azure-mlops/
 │   └── deployment.yml             # MLflow no-code deployment (blue or green)
 ├── tests/test_gate.py             # unit tests for the gate (pytest)
 ├── ci/azure-mlops.yml             # GitHub Actions workflow template
-├── config.example.json
+├── env.sample                     # template: copy to .env and fill in your IDs
+├── config.example.json            # the config.json alternative
 └── requirements.txt
 ```
 
