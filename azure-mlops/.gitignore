@@ -1,5 +1,7 @@
 # Your workspace details: keep them out of git
 config.json
+.env
+env.sample
 
 # Created when the notebook runs
 downloads/

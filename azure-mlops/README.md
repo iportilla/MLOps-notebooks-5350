@@ -4,6 +4,30 @@ An advanced, cloud version of the MLOps 101 lab. It takes two **Automated ML** m
 
 It follows the Microsoft Learn path [Introduction to machine learning operations (MLOps)](https://learn.microsoft.com/en-us/training/paths/introduction-machine-learn-operations/), using the Azure ML Python SDK v2 (`azure-ai-ml`) and MLflow.
 
+## The MLOps lifecycle
+
+```mermaid
+flowchart LR
+    T["1. Train model"] --> P["2. Package model"]
+    P --> V["3. Validate model"]
+    V --> D["4. Deploy model"]
+    D --> M["5. Monitor model"]
+    M -- "6. Retrain model" --> T
+```
+
+*The machine learning lifecycle, after the diagram in Microsoft Learn's [Introduction to DevOps principles for machine learning](https://learn.microsoft.com/en-us/training/modules/introduction-development-operations-principles-for-machine-learn/).*
+
+Each step maps to part of the notebook:
+
+| Step | What it means | In this notebook |
+|---|---|---|
+| 1. Train model | Fit a model on versioned data | AutoML trained `balanced_model` and `sms_real_1k`; section 8 retrains from code |
+| 2. Package model | Save the model with its dependencies so it runs anywhere | MLflow model format and its `conda.yaml`, registered in the model registry (sections 1–2) |
+| 3. Validate model | Test it on data it has never seen, against fixed rules | Evaluate-and-gate pipeline on the fixed test set, results stored as registry tags (sections 3–4) |
+| 4. Deploy model | Serve it safely to users | Managed online endpoint with blue/green, shadow and canary rollout (sections 5–6) |
+| 5. Monitor model | Watch for drift and failures in production | Drift reports through the live endpoint, logged to MLflow (section 7) |
+| 6. Retrain model | Close the loop when the world changes | AutoML job on new data, judged by the same gate; automated with GitHub Actions (sections 8–9) |
+
 > ⚠️ **Creates billable Azure resources** (a compute cluster, an online endpoint, an optional AutoML job). Run the notebook's **Clean up** section when you finish.
 
 ## What you need
