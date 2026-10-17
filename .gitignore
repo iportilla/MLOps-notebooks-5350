@@ -1,0 +1,14 @@
+# Created when you run the lab: make_data.py, train.py, pipeline.py and the notebooks
+models/
+mlops_nb/
+mlops_basics/
+data/*
+!data/sms_real_1k.csv
+
+# Python and Jupyter
+__pycache__/
+.ipynb_checkpoints/
+.virtual_documents/
+
+# macOS
+.DS_Store
