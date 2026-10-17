@@ -6,6 +6,7 @@ downloads/
 outputs/
 request.json
 mlruns/
+mlflow.db        # local MLflow tracking store, created when the scripts run outside Azure
 
 __pycache__/
 .pytest_cache/
