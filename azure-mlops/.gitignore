@@ -1,0 +1,12 @@
+# Your workspace details: keep them out of git
+config.json
+
+# Created when the notebook runs
+downloads/
+outputs/
+request.json
+mlruns/
+
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/

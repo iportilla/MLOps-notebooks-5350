@@ -1,0 +1,32 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+name: sms_quality_gate
+display_name: Quality gate (champion vs challenger)
+description: Compares two metrics.json files and writes decision.json with promote true/false and the reasons.
+version: "1"
+
+inputs:
+  champion_metrics:
+    type: uri_folder
+  challenger_metrics:
+    type: uri_folder
+  accuracy_min:
+    type: number
+    default: 0.85
+  recall_min:
+    type: number
+    default: 0.80
+
+outputs:
+  decision:
+    type: uri_folder
+
+code: ../src
+environment: azureml:sms-automl-env@latest
+command: >-
+  python gate.py
+  --champion_metrics ${{inputs.champion_metrics}}
+  --challenger_metrics ${{inputs.challenger_metrics}}
+  --accuracy_min ${{inputs.accuracy_min}}
+  --recall_min ${{inputs.recall_min}}
+  --decision ${{outputs.decision}}

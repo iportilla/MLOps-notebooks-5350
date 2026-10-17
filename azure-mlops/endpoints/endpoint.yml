@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
+# The name must be unique in the Azure region. Override it: az ml online-endpoint create -f endpoint.yml --name <yours>
+name: sms-spam-endpoint
+auth_mode: key
+description: SMS spam classifier (MLOps 101 lab)

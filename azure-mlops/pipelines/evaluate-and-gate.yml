@@ -1,0 +1,47 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: evaluate-and-gate
+experiment_name: sms-mlops-gate
+description: Evaluates the champion and the challenger on the same fixed test set, then runs the quality gate.
+
+settings:
+  default_compute: azureml:cpu-cluster
+
+inputs:
+  champion_model:
+    type: mlflow_model
+    path: azureml:balanced_model:1
+  challenger_model:
+    type: mlflow_model
+    path: azureml:sms_real_1k:1
+  test_data:
+    type: uri_file
+    path: azureml:sms_test_set@latest
+
+outputs:
+  decision:
+    type: uri_folder
+
+jobs:
+  evaluate_champion:
+    type: command
+    component: ../components/evaluate.yml
+    inputs:
+      model: ${{parent.inputs.champion_model}}
+      test_data: ${{parent.inputs.test_data}}
+
+  evaluate_challenger:
+    type: command
+    component: ../components/evaluate.yml
+    inputs:
+      model: ${{parent.inputs.challenger_model}}
+      test_data: ${{parent.inputs.test_data}}
+
+  gate:
+    type: command
+    component: ../components/gate.yml
+    inputs:
+      champion_metrics: ${{parent.jobs.evaluate_champion.outputs.metrics}}
+      challenger_metrics: ${{parent.jobs.evaluate_challenger.outputs.metrics}}
+    outputs:
+      decision: ${{parent.outputs.decision}}

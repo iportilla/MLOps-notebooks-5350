@@ -1,0 +1,8 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+# MLflow models need no scoring script or environment: Azure ML generates both ("no-code deployment").
+# CI overrides these with --set name=... endpoint_name=... model=azureml:<name>:<version>
+name: green
+endpoint_name: sms-spam-endpoint
+model: azureml:balanced_model:1
+instance_type: Standard_DS3_v2
+instance_count: 1

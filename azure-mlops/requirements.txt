@@ -1,0 +1,10 @@
+# Azure ML SDK v2 and MLflow (for the notebook)
+azure-ai-ml
+azure-identity
+mlflow
+azureml-mlflow
+pandas
+scikit-learn
+# For the unit tests and CI
+pytest
+flake8
