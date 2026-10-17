@@ -34,7 +34,7 @@ Slides 14–16 introduce the notebooks: the metrics (14), which notebook to run 
 
 ```bash
 pip install -r requirements.txt
-python make_data.py
+python make_data.py      # optional: the datasets are already in data/
 python train.py data/sms_real_1k.csv v1
 ```
 
@@ -44,9 +44,10 @@ Then follow [IN_CLASS_LAB.md](IN_CLASS_LAB.md).
 
 ```bash
 pip install -r requirements.txt jupyterlab
-python make_data.py
 jupyter lab
 ```
+
+All the datasets are already in `data/`. Running `python make_data.py` is optional: it recreates exactly the same files (fixed seed).
 
 Then run the notebooks in this order:
 
@@ -89,11 +90,15 @@ MLOps-notebooks-5350/
 ├── Dockerfile             # optional: package the app in a container
 ├── requirements.txt
 └── data/
-    ├── sms_real_1k.csv        # provided: real SMS features (85% ham, 15% spam)
-    ├── balanced.csv           # created by make_data.py: 1,000 ham + 1,000 spam
-    ├── test_set.csv           # created: the fixed test set (85% ham, 15% spam)
-    └── new_week_*.csv         # created: ok, bad (labeling bug) and drift batches
+    ├── sms_real_1k.csv        # real SMS features (85% ham, 15% spam)
+    ├── balanced.csv           # 1,000 ham + 1,000 spam: the base training data
+    ├── test_set.csv           # the fixed test set (85% ham, 15% spam)
+    ├── new_week_ok.csv        # a normal weekly batch
+    ├── new_week_bad.csv       # a batch with a labeling bug (spam labeled as ham)
+    └── new_week_drift.csv     # a batch where spammers send short messages
 ```
+
+All six datasets are included. `make_data.py` can recreate every file except `sms_real_1k.csv`, with identical contents.
 
 Folders created when you run things:
 
