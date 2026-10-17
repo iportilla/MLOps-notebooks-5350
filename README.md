@@ -59,6 +59,8 @@ flowchart LR
 ```
 
 1. **[train_model.ipynb](train_model.ipynb)** trains v1 (imbalanced data) and v2 (balanced data), and saves both as `models/model_nb_v1.pkl` and `models/model_nb_v2.pkl`, each with a `.json` model card. Run it all the way through first.
+
+   > **Stuck on this notebook?** Run `python make_solution_models.py`. It trains v1 and v2 exactly as the notebook's solution does and saves the same four files, so you can go straight to step 2.
 2. Then pick **one**:
    - **[mlops_basics.ipynb](mlops_basics.ipynb)**, if you are new to data science: save versions, quality gate, serve, retrain and roll back, watch for drift. Every TODO is one or two lines.
    - **[mlops_pipeline.ipynb](mlops_pipeline.ipynb)**, the full version, following slides 4–13: everything in the basics notebook plus reproducibility checks, data validation, shadow/canary/blue-green rollouts, a refreshed test set and an automated weekly job.
@@ -81,6 +83,7 @@ MLOps-notebooks-5350/
 │
 ├── common.py              # shared code: features, train, evaluate
 ├── make_data.py           # creates the synthetic datasets
+├── make_solution_models.py  # creates v1 and v2 as train_model.ipynb would (for notebooks 2 and 3)
 ├── train.py               # train one model + write its model card
 ├── predict.py             # classify a message with a saved model
 ├── pipeline.py            # ingest -> retrain -> evaluate -> version -> gate/promote  (has a TODO)
@@ -124,7 +127,7 @@ Run every script from the repository root, where `make_data.py` is. The paths ar
 
 **`models/model_nb_v1.pkl is missing` in an MLOps notebook**
 
-Run all of `train_model.ipynb` first. It saves the two models the MLOps notebooks start from.
+Run all of `train_model.ipynb` first. It saves the two models the MLOps notebooks start from. If you could not finish it, run `python make_solution_models.py` instead: it creates the same two models.
 
 **`Finish the TODO ...` or `The registry should have v1 and v2`**
 

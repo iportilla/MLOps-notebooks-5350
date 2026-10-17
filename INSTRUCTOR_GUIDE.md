@@ -114,6 +114,7 @@ The notebooks tell the same story as the command-line lab, using the students' o
 **Things to know:**
 - Each MLOps notebook works in its own folder (`mlops_nb/` or `mlops_basics/`) and empties it when its setup cell runs. Students who re-run setup must re-run everything after it.
 - The starter sections stop at the first unfilled TODO. That is by design: later sections use earlier results.
+- **Students who could not finish `train_model.ipynb`** can run `python make_solution_models.py`. It retrains v1 and v2 exactly as that notebook's solution does (same weights, same model cards) and saves the files the MLOps notebooks need. It skips models that already exist unless given `--force`, so it never overwrites a student's own work by accident.
 
 ## Talking points by part
 
@@ -140,7 +141,7 @@ The notebooks tell the same story as the command-line lab, using the students' o
 | Bad batch still passes after the fix | The constant is defined but `passes_gate` does not use it, or `ok =` was overwritten instead of combined |
 | `cat` not found (Windows) | Use `type models\model_v2.json` |
 | Docker build fails on `COPY models/production.pkl` | Run the pipeline first so the file exists |
-| Notebook: `models/model_nb_v1.pkl is missing` | Run all of `train_model.ipynb` first |
+| Notebook: `models/model_nb_v1.pkl is missing` | Run all of `train_model.ipynb` first, or `python make_solution_models.py` |
 | Notebook: `Finish the TODO ...` or `The registry should have v1 and v2` | A starter TODO is unfilled. Fill it in or copy the Part B cell |
 | Notebook: `mlops_nb/versions/v2.pkl does not exist` | Section 1c was skipped, or setup was re-run. Run the cells in order from setup |
 | Notebook diagrams show as text | Jupyter is too old for Mermaid. Upgrade to JupyterLab 4.1+ or use VS Code |
