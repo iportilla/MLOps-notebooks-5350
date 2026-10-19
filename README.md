@@ -69,6 +69,36 @@ flowchart LR
 
 Each notebook's Solution section (Part B) runs on its own from top to bottom. The diagrams are Mermaid charts: they render in JupyterLab 4.1+, Notebook 7.1+ and VS Code.
 
+## Optional: run the app in Docker
+
+The [Dockerfile](Dockerfile) packages the Streamlit app (`app.py`) with the production model. The [Makefile](Makefile) wraps the Docker commands. It needs Docker Desktop (or another Docker engine) and `make`.
+
+The image includes `models/production.pkl`, so create it first (Part 4a of the lab does this):
+
+```bash
+python pipeline.py data/new_week_ok.csv
+```
+
+Then:
+
+| Command | What it does |
+|---|---|
+| `make build` | Builds the `spam-lab` image |
+| `make run` | Starts the app in the background at <http://localhost:8501> (replaces any running copy) |
+| `make stop` | Stops and removes the container |
+| `make logs` | Follows the app's logs (Ctrl+C to quit) |
+| `make restart` | Rebuilds the image and starts it again, for example after the pipeline promotes a new model |
+| `make clean` | Stops the container and deletes the image |
+| `make help` | Lists the targets |
+
+To use another port, run `make run PORT=8502`. Without `make` (for example on Windows), use the plain commands:
+
+```bash
+docker build -t spam-lab .
+docker run -d --name spam-lab -p 8501:8501 spam-lab
+docker rm -f spam-lab
+```
+
 ## Files
 
 ```
@@ -95,6 +125,7 @@ MLOps-notebooks-5350/
 ├── check_drift.py         # monitoring: has the data changed?
 ├── app.py                 # optional: Streamlit web app
 ├── Dockerfile             # optional: package the app in a container
+├── Makefile               # optional: make build / run / stop / clean for the container
 ├── requirements.txt
 └── data/
     ├── sms_real_1k.csv        # real SMS features (85% ham, 15% spam)
@@ -121,7 +152,7 @@ The two MLOps notebooks never touch `models/production.pkl` or `models/registry.
 
 **`FileNotFoundError: models/production.pkl`**
 
-`models/production.pkl` does not exist until the pipeline promotes a model in Part 4a. `predict.py` (with no model argument), `app.py`, `check_drift.py` and the Docker build all need it. Create it with:
+`models/production.pkl` does not exist until the pipeline promotes a model in Part 4a. `predict.py` (with no model argument), `app.py`, `check_drift.py` and the Docker build (`make build`) all need it. Create it with:
 
 ```bash
 python pipeline.py data/new_week_ok.csv
