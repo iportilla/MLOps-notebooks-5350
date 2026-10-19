@@ -14,6 +14,7 @@ There are two ways to do the lab. Both tell the same story with the same data:
 | [train_model.ipynb](train_model.ipynb) | **Students, notebooks, step 1.** Train v1 and v2; accuracy, precision, recall, F1 and the decision threshold |
 | [mlops_basics.ipynb](mlops_basics.ipynb) | **Students new to data science, step 2.** The five big MLOps steps with short TODOs |
 | [mlops_pipeline.ipynb](mlops_pipeline.ipynb) | **Students, step 2, full version.** Registry, gate, API, pipeline, rollback, shadow/canary/blue-green, drift |
+| [test_code_engine.ipynb](test_code_engine.ipynb) | **Optional, IBM Cloud.** Smoke test for the app deployed on IBM Cloud Code Engine: status, environment, response time |
 | [azure-mlops/](azure-mlops/README.md) | **Advanced, on Azure.** The same loop with AutoML models in Azure Machine Learning: pipelines, managed endpoints, AutoML retraining, GitHub Actions |
 | [INSTRUCTOR_GUIDE.md](INSTRUCTOR_GUIDE.md) | Instructor. Timing, slide mapping, talking points, common problems |
 | [SOLUTION.md](SOLUTION.md) | Instructor (share after class). Answers and expected output |
@@ -194,6 +195,7 @@ MLOps-notebooks-5350/
 ├── train_model.ipynb      # notebook 1: train v1 and v2, metrics, model cards
 ├── mlops_basics.ipynb     # notebook 2 (beginner): the five major MLOps steps
 ├── mlops_pipeline.ipynb   # notebook 2 (full): the whole MLOps loop
+├── test_code_engine.ipynb # optional: smoke test for the app on IBM Cloud Code Engine
 ├── azure-mlops/           # advanced: the loop on Azure ML with AutoML models (see its README)
 │
 ├── common.py              # shared code: features, train, evaluate
