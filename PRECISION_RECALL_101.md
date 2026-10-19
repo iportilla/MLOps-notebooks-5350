@@ -47,6 +47,14 @@ The slide's example: **10 messages, 4 of them spam.** The model flags 5 messages
 | FN (spam, missed) | 1 |
 | TN (ham, not flagged) | 4 |
 
+The same counts in the confusion matrix. The column total is what precision divides by, and the row total is what recall divides by:
+
+|                    | Model says **ham** | Model says **spam** | Total |
+|--------------------|-------------------|--------------------|-------|
+| **Really ham**     | TN = 4 | FP = 2 | 6 |
+| **Really spam**    | FN = 1 | TP = 3 | **4** real spam → recall = 3 / 4 |
+| **Total**          | 5 | **5** flagged → precision = 3 / 5 | 10 |
+
 | Metric | Question it answers | Formula | Example |
 |---|---|---|---|
 | **Precision** | When we flag spam, how often are we right? | TP / (TP + FP) | 3 / 5 = **60%** |
@@ -83,7 +91,7 @@ You want to catch salmon (spam) and leave everything else (ham) in the water.
 Our model doesn't really output "spam" or "ham." It outputs a **probability** (a spam score from 0 to 1). We then pick a **threshold**: everything at or above it gets flagged.
 
 ```mermaid
-flowchart LR
+flowchart TB
     T["Message"] --> F["Features<br/>length, punct"] --> M["Model"] --> S["Spam score<br/>0.0 to 1.0"]
     S --> D{"score ≥ threshold?"}
     D -- "yes" --> SP["SPAM"]
@@ -135,7 +143,7 @@ What to notice:
 2. **The same model becomes useful just by lowering the threshold.** At 0.25 it catches 79% of spam. Nothing was retrained.
 3. **Going down the table, recall goes up and precision goes down.** At 0.05 we catch 37 of 38 spam, but 127 good emails go to the spam folder.
 4. **Accuracy is a poor guide here.** It is highest at 0.30, yet a 0.5 model with 0% recall still scores 83.6%.
-5. **F1 peaks in the middle (0.25),** where precision and recall are balanced.
+5. **F1 peaks at 0.25,** close to where precision and recall cross. F1 rewards the best combination of the two, not exact balance: at 0.30 they are closer (60% vs 63%), but F1 is slightly lower.
 
 ---
 
@@ -189,7 +197,7 @@ A model that flags one message, correctly, has 100% precision. If it misses 90% 
 
 ## 8. Try it yourself
 
-Run this from the `lab-mlops-101` folder after `python make_data.py`:
+Run this from the repo root after `python make_data.py`:
 
 ```python
 from sklearn.model_selection import train_test_split
