@@ -99,6 +99,87 @@ docker run -d --name spam-lab -p 8501:8501 spam-lab
 docker rm -f spam-lab
 ```
 
+## Optional: deploy to the class cloud VM
+
+The same container can run on the shared class VM. Everyone uses the same machine, so you work only in **your own folder** and give your container **your own name and port**. In the commands below, replace:
+
+| Placeholder | Replace with | Example |
+|---|---|---|
+| `<VM_IP>` | The VM's IP address, given in class | `20.115.42.10` |
+| `<user>` | Your login on the VM, given in class | `student07` |
+| `<name>` | Your first name or student ID, lower case, no spaces | `maria` |
+| `<port>` | Your port, between 8000 and 8010, given in class (unique per student) | `8003` |
+
+**1. Log in to the VM**
+
+```bash
+ssh <user>@<VM_IP>
+```
+
+**2. Go to your personal folder and get the code**
+
+```bash
+mkdir -p ~/<name>
+cd ~/<name>
+git clone https://github.com/iportilla/MLOps-notebooks-5350.git
+cd MLOps-notebooks-5350
+```
+
+Run every command from here on inside `~/<name>/MLOps-notebooks-5350`. Do not change other students' folders.
+
+**3. Add the production model**
+
+The image needs `models/production.pkl`, which is not in the repository. Pick one:
+
+- **Copy the one you made in the lab.** On the VM, run `mkdir -p models`. Then in a terminal on **your laptop**, from your local copy of the repository:
+
+  ```bash
+  scp models/production.pkl <user>@<VM_IP>:~/<name>/MLOps-notebooks-5350/models/
+  ```
+
+- **Or create it on the VM:**
+
+  ```bash
+  python3 -m venv .venv
+  . .venv/bin/activate
+  pip install -r requirements.txt
+  python pipeline.py data/new_week_ok.csv
+  ```
+
+**4. Pick your port**
+
+The VM's firewall only lets in ports **8000 to 8010**, so the default 8501 cannot be reached from your laptop. Each student gets one port in that range, and no two students may use the same one. Inside the container the app still listens on 8501; `PORT` only sets the port on the VM that forwards to it (`-p <port>:8501`).
+
+You set the port when you start the container, with `PORT=<port>`. You do not need to edit the Makefile or the Dockerfile. To check which ports are already taken:
+
+```bash
+docker ps --format '{{.Names}}  {{.Ports}}'
+```
+
+**5. Build and run your container**
+
+```bash
+make build IMAGE=spam-lab-<name>
+make run IMAGE=spam-lab-<name> CONTAINER=spam-lab-<name> PORT=<port>
+```
+
+Always pass the same `IMAGE`, `CONTAINER` and `PORT` values. The defaults (`spam-lab`, port 8501) are shared by everyone on the VM, so using them would stop or overwrite another student's app.
+
+**6. Open the app**
+
+In the browser on your laptop, go to `http://<VM_IP>:<port>`.
+
+**7. Update, inspect and clean up**
+
+```bash
+make logs    CONTAINER=spam-lab-<name>
+make restart IMAGE=spam-lab-<name> CONTAINER=spam-lab-<name> PORT=<port>
+make stop    CONTAINER=spam-lab-<name>
+make clean   IMAGE=spam-lab-<name> CONTAINER=spam-lab-<name>
+```
+
+Use `make restart` after copying in a new `production.pkl`. To move to a different port, run `make run` again with the new value, for example `make run IMAGE=spam-lab-<name> CONTAINER=spam-lab-<name> PORT=8005`: it stops your old container and starts it on the new port. No rebuild is needed. Run `make clean` at the end of class so the VM does not fill up with old images.
+
 ## Files
 
 ```
@@ -171,6 +252,18 @@ A starter cell still has an unfilled `# TODO`. Fill it in, or copy the matching 
 **`mlops_nb/versions/v2.pkl does not exist`**
 
 Section 1c of `mlops_pipeline.ipynb` registers v1 and v2. Run it before the later sections. If you re-ran the setup cell, it emptied `mlops_nb/`: run every cell after it again.
+
+**Cloud VM: `permission denied ... docker.sock`**
+
+Your VM user is not allowed to run Docker. Ask the instructor to add you to the `docker` group, then log out and back in.
+
+**Cloud VM: the page at `http://<VM_IP>:<port>` does not load**
+
+Check that the container is running with `docker ps --filter name=spam-lab-<name>`, and look at `make logs CONTAINER=spam-lab-<name>`. If it is running, the port is probably blocked by the VM's firewall: check that your port is between 8000 and 8010 and is the one assigned to you.
+
+**Cloud VM: `port is already allocated`**
+
+Another container is using that port. Run `docker ps --format '{{.Names}}  {{.Ports}}'` to see who has it, then use the port assigned to you (8000–8010), not the default 8501.
 
 **Diagrams show up as text starting with `flowchart`**
 
