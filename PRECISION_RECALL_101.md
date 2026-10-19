@@ -13,20 +13,24 @@ Every message ends up in exactly one of four boxes:
 ```mermaid
 flowchart TB
     M["A message arrives"] --> Q{"Model says SPAM?"}
-    Q -- "Yes (flagged)" --> Y{"Is it really spam?"}
-    Q -- "No (inbox)" --> N{"Is it really spam?"}
-    Y -- "Yes" --> TP["TP: true positive<br/>spam caught ✔"]
-    Y -- "No" --> FP["FP: false positive<br/>a real email lost ✘"]
-    N -- "Yes" --> FN["FN: false negative<br/>scam in the inbox ✘"]
-    N -- "No" --> TN["TN: true negative<br/>normal email delivered ✔"]
+    Q -- "Yes (flagged)<br/>score at or above threshold" --> Y{"Is it really spam?<br/>(check the true label)"}
+    Q -- "No (inbox)<br/>score below threshold" --> N{"Is it really spam?<br/>(check the true label)"}
+    Y -- "Yes" --> TP["TP: true positive<br/>spam caught ✔<br/><i>counts toward precision and recall</i>"]
+    Y -- "No" --> FP["FP: false positive<br/>a real email lost ✘<br/><i>lowers PRECISION</i>"]
+    N -- "Yes" --> FN["FN: false negative<br/>spam reached the inbox ✘<br/><i>lowers RECALL</i>"]
+    N -- "No" --> TN["TN: true negative<br/>normal email delivered ✔<br/><i>only counts in accuracy</i>"]
+    FP -.-> FIXP["Fewer FPs:<br/>raise the threshold"]
+    FN -.-> FIXN["Fewer FNs:<br/>lower the threshold"]
 ```
+
+**How to read the names:** the second word (*Positive* / *Negative*) is **what the model said**. The first word (*True* / *False*) is **whether it was right**. So a false negative is a message the model sent to the inbox (negative) when it was really spam (wrong).
 
 The same thing as a **confusion matrix**:
 
 |                    | Model says **ham** | Model says **spam** |
 |--------------------|-------------------|--------------------|
 | **Really ham**     | TN ✔ | FP ✘ (good email lost) |
-| **Really spam**    | FN ✘ (scam gets through) | TP ✔ |
+| **Really spam**    | FN ✘ (spam gets through) | TP ✔ |
 
 There are two different kinds of mistake. Precision and recall each watch **one** of them.
 
