@@ -10,6 +10,7 @@ There are two ways to do the lab. Both tell the same story with the same data:
 | Document | Who it is for |
 |---|---|
 | [IN_CLASS_LAB.md](IN_CLASS_LAB.md) | **Students, command line.** Step-by-step lab to follow in class |
+| [PRECISION_RECALL_101.md](PRECISION_RECALL_101.md) | **Students.** Plain-language guide to precision vs recall, the threshold trade-off and F1, with examples (slide 14) |
 | [train_model.ipynb](train_model.ipynb) | **Students, notebooks, step 1.** Train v1 and v2; accuracy, precision, recall, F1 and the decision threshold |
 | [mlops_basics.ipynb](mlops_basics.ipynb) | **Students new to data science, step 2.** The five big MLOps steps with short TODOs |
 | [mlops_pipeline.ipynb](mlops_pipeline.ipynb) | **Students, step 2, full version.** Registry, gate, API, pipeline, rollback, shadow/canary/blue-green, drift |
@@ -77,6 +78,7 @@ MLOps-notebooks-5350/
 ├── IN_CLASS_LAB.md        # student lab, command-line version
 ├── INSTRUCTOR_GUIDE.md    # timing, slide mapping, talking points
 ├── SOLUTION.md            # answers and expected output
+├── PRECISION_RECALL_101.md  # precision vs recall, thresholds and F1, explained
 │
 ├── train_model.ipynb      # notebook 1: train v1 and v2, metrics, model cards
 ├── mlops_basics.ipynb     # notebook 2 (beginner): the five major MLOps steps
