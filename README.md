@@ -181,6 +181,8 @@ make clean   IMAGE=spam-lab-<name> CONTAINER=spam-lab-<name>
 
 Use `make restart` after copying in a new `production.pkl`. To move to a different port, run `make run` again with the new value, for example `make run IMAGE=spam-lab-<name> CONTAINER=spam-lab-<name> PORT=8005`: it stops your old container and starts it on the new port. No rebuild is needed. Run `make clean` at the end of class so the VM does not fill up with old images.
 
+To run model v1 and v2 side by side on the VM and compare them, follow [DOCKER_DEPLOY.md](DOCKER_DEPLOY.md).
+
 ## Files
 
 ```
@@ -209,6 +211,7 @@ MLOps-notebooks-5350/
 ├── app.py                 # optional: Streamlit web app
 ├── Dockerfile             # optional: package the app in a container
 ├── Makefile               # optional: make build / run / stop / clean for the container
+├── DOCKER_DEPLOY.md       # optional: run model v1 and v2 side by side on the cloud VM
 ├── requirements.txt
 └── data/
     ├── sms_real_1k.csv        # real SMS features (85% ham, 15% spam)
